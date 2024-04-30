@@ -305,7 +305,7 @@ const Index = () => {
                                                 }}
                                             >
                                                 {
-                                                    key=='colors' ? (
+                                                    key == 'colors' ? (
                                                         <View style={{
                                                             height: 15,
                                                             width: 20,
