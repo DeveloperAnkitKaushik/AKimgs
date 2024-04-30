@@ -15,8 +15,6 @@ import { useRouter } from 'expo-router';
 import { Image } from 'expo-image';
 import Services from '@/utils/Services'
 import { client } from '@/utils/KindeConfig';
-import 'dotenv/config';
-require('dotenv').config();
 
 var page = 1;
 
