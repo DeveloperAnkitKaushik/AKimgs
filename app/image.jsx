@@ -9,7 +9,8 @@ import Colors from '../utils/Colors'
 import Animated, { FadeInDown } from 'react-native-reanimated'
 import * as FileSystem from 'expo-file-system';
 import * as ExpoSharing from 'expo-sharing';
-import Toast from 'react-native-toast-message'
+import Toast from 'react-native-toast-message';
+import * as MediaLibrary from 'expo-media-library';
 
 const ImageScreen = () => {
   const route = useRouter();
@@ -60,11 +61,20 @@ const ImageScreen = () => {
 
   const download = async () => {
     setStatus('downloading')
-    let res = await downloadImage();
-    if (res) {
-      showToast('Downloaded Successfully!')
-      setStatus('')
-    }
+    const fileName = imageURL.replace(/^.*[\\\/]/, '');
+    let imageFullPathInLocalStorage = FileSystem.documentDirectory + fileName;
+    return new Promise(async (resolve) => {
+      FileSystem.downloadAsync(
+        imageURL,
+        imageFullPathInLocalStorage
+      )
+        .then(async ({ uri }) => {
+          MediaLibrary.saveToLibraryAsync(imageFullPathInLocalStorage);
+          showToast('Downloaded Successfully!')
+          setStatus('')
+          return resolve(imageFullPathInLocalStorage);
+        })
+    });
   }
 
   const showToast = (message) => {
@@ -143,6 +153,33 @@ const ImageScreen = () => {
             </TouchableOpacity>
           </Animated.View>
           {
+            status == 'downloading' ? (
+              <View style={{
+                height: hp(6),
+                width: hp(6),
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'rgba(255,255,255,0.2)',
+                borderRadius: 15,
+              }}>
+                <ActivityIndicator size='large' color='white' />
+              </View>
+            ) : (
+              <Animated.View entering={FadeInDown.delay(300).springify()} >
+                <TouchableOpacity onPress={() => download()} style={{
+                  height: hp(6),
+                  width: hp(6),
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: 'rgba(255,255,255,0.2)',
+                  borderRadius: 15,
+                }}>
+                  <AntDesign name="download" size={24} color={Colors.white} />
+                </TouchableOpacity>
+              </Animated.View>
+            )
+          }
+          {
             status == 'sharing' ? (
               <View style={{
                 height: hp(6),
@@ -164,7 +201,7 @@ const ImageScreen = () => {
                   backgroundColor: 'rgba(255,255,255,0.2)',
                   borderRadius: 15,
                 }}>
-                  <AntDesign name="download" size={24} color={Colors.white} />
+                  <AntDesign name="sharealt" size={24} color={Colors.white} />
                 </TouchableOpacity>
               </Animated.View>
             )

@@ -11,7 +11,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ankitkaushik.akimgs"
     },
     "android": {
       "adaptiveIcon": {
@@ -19,6 +20,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.ankitkaushik.akimgs"
+      
     },
     "web": {
       "bundler": "metro",

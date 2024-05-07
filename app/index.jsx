@@ -221,7 +221,7 @@ const Index = () => {
 
     return (
         <View style={{ paddingTop: notchArea, flex: 1 }}>
-            <StatusBar barStyle={'default'} />
+            <StatusBar barStyle={'dark-content'} />
             {/* Header  */}
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 15 }}>
                 <Pressable style={{}} onPress={scrollToTop}>
